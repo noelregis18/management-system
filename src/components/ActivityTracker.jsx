@@ -38,9 +38,9 @@ const ActivityTracker = ({ onActivityChange }) => {
     'Thursday-11:10-12:00': { course: 'ESC-501', instructor: 'SAR(CS)', subject: 'Software Engineering' },
     'Thursday-12:00-12:50': { course: 'PCC CS-501', instructor: 'RDB(CS)', subject: 'Compiler Design' },
     'Thursday-1:40-2:30': { course: 'LIB', instructor: 'LIBRARIAN', subject: 'Library' },
-    'Thursday-2:30-3:20': { course: 'PCC CS-593 (LAB 13&14)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' },
-    'Thursday-3:20-4:10': { course: 'PCC CS-593 (LAB 13&14)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' },
-    'Thursday-4:10-5:00': { course: 'PCC CS-593 (LAB 13&14)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' },
+    'Thursday-2:30-3:20': { course: 'PCC CS-593 (LAB 3&4)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' },
+    'Thursday-3:20-4:10': { course: 'PCC CS-593 (LAB 3&4)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' },
+    'Thursday-4:10-5:00': { course: 'PCC CS-593 (LAB 3&4)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' },
 
     // Friday Schedule
     'Friday-9:30-10:20': { course: 'PEC IT-501B', instructor: 'PKP(CS)', subject: 'Artificial Intelligence' },

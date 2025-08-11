@@ -54,9 +54,9 @@ const Timetable = () => {
       '12:00-12:50': { course: 'PCC CS-501', instructor: 'RDB(CS)', subject: 'Compiler Design' },
       'LUNCH': { subject: 'Lunch Break', room: '', instructor: '' },
       '13:40-14:30': { course: 'LIB', instructor: 'LIBRARIAN', subject: 'Library' },
-      '14:30-15:20': { course: 'PCC CS-593 (LAB 13&14)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' },
-      '15:20-16:10': { course: 'PCC CS-593 (LAB 13&14)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' },
-      '16:10-17:00': { course: 'PCC CS-593 (LAB 13&14)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' }
+      '14:30-15:20': { course: 'PCC CS-593 (LAB 3&4)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' },
+      '15:20-16:10': { course: 'PCC CS-593 (LAB 3&4)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' },
+      '16:10-17:00': { course: 'PCC CS-593 (LAB 3&4)', instructor: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)', subject: 'Operating Systems Lab' }
     },
     'Friday': {
       '09:30-10:20': { course: 'PEC IT-501B', instructor: 'PKP(CS)', subject: 'Artificial Intelligence' },
@@ -102,20 +102,26 @@ const Timetable = () => {
   }
 
   const renderWeeklyView = () => (
-    <div className="w-full">
-      <table className="w-full border-collapse text-gray-900">
+    <div className="w-full overflow-x-auto">
+      <table className="w-full border-collapse text-gray-900 min-w-[1200px]">
         <thead>
           <tr className="border-b-2 border-gray-300">
-            <th className="p-4 text-left font-bold text-gray-800 text-base min-w-[120px]">Time</th>
+            <th className="p-4 text-left font-bold text-gray-800 text-sm min-w-[100px] sticky left-0 bg-white z-10">Time</th>
             {days.map(day => (
-              <th key={day} className="p-4 text-center font-bold text-gray-800 text-base min-w-[160px]">{day}</th>
+              <th key={day} className={`p-4 text-center font-bold text-sm min-w-[140px] max-w-[160px] ${
+                (day === 'Sunday' || day === 'Monday') ? 'text-gray-600 bg-gray-100' : 'text-gray-800'
+              }`}>
+                <div className="truncate">{day}</div>
+              </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {timeSlots.map((time) => (
             <tr key={time} className="border-b border-gray-200">
-              <td className="p-4 font-bold text-gray-700 text-sm">{time}</td>
+              <td className="p-4 font-bold text-gray-700 text-xs sticky left-0 bg-white z-10 border-r border-gray-200">
+                <div className="truncate">{time}</div>
+              </td>
               {days.map((day) => {
                 const classData = getClassData(day, time)
                 
@@ -123,20 +129,22 @@ const Timetable = () => {
                   // Show lunch break as null on Sunday and Monday (weekends)
                   if (day === 'Sunday' || day === 'Monday') {
                     return (
-                      <td key={day} className="p-2 border border-gray-200">
-                        <div className="h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
-                          <span className="text-gray-500 text-xs font-medium">No Lunch Break</span>
+                      <td key={day} className={`p-3 border border-gray-200 ${
+                        (day === 'Sunday' || day === 'Monday') ? 'bg-gray-100' : ''
+                      }`}>
+                        <div className="h-52 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50 p-4">
+                          <span className="text-base text-gray-600 font-semibold text-center leading-tight">No Lunch Break</span>
                         </div>
                       </td>
                     )
                   }
                   
                   return (
-                    <td key={day} className="p-2 bg-orange-50 border border-orange-200">
-                      <div className="text-center text-orange-800 font-bold text-sm h-24 flex flex-col justify-center">
-                        <div className="mb-1">LUNCH BREAK</div>
+                    <td key={day} className="p-3 bg-orange-50 border border-orange-200">
+                      <div className="text-center text-orange-800 font-bold text-xs h-52 flex flex-col justify-center">
+                        <div className="mb-2">LUNCH</div>
                         <div className="text-orange-600 text-xs">
-                          12:50 - 1:40 PM
+                          12:50-1:40
                         </div>
                       </div>
                     </td>
@@ -145,29 +153,33 @@ const Timetable = () => {
 
                 if (!classData) {
                   return (
-                    <td key={day} className="p-2 border border-gray-200">
-                      <div className="h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50">
-                        <span className="text-xs text-gray-500 font-medium">No Class</span>
+                    <td key={day} className={`p-3 border border-gray-200 ${
+                      (day === 'Sunday' || day === 'Monday') ? 'bg-gray-100' : ''
+                    }`}>
+                      <div className="h-52 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-gray-50 p-4">
+                        <span className="text-base text-gray-600 font-semibold text-center leading-tight">No Class</span>
                       </div>
                     </td>
                   )
                 }
 
                 return (
-                  <td key={day} className="p-2 border border-gray-200">
-                    <div className="h-24 p-2 rounded-lg bg-blue-50 border border-blue-200 flex flex-col justify-between">
-                      <div className="font-bold text-xs mb-1 text-blue-900 leading-tight">
+                  <td key={day} className={`p-3 border border-gray-200 ${
+                    (day === 'Sunday' || day === 'Monday') ? 'bg-gray-100' : ''
+                  }`}>
+                    <div className="h-52 p-4 rounded-lg bg-blue-50 border border-blue-200 flex flex-col justify-between">
+                      <div className="font-bold text-sm mb-2 text-blue-900 leading-tight truncate">
                         {classData.course}
                       </div>
-                      <div className="font-semibold text-sm mb-1 text-blue-900 leading-tight">
+                      <div className="font-semibold text-sm mb-2 text-blue-900 leading-tight line-clamp-3">
                         {classData.subject}
                       </div>
-                      <div className="text-xs text-blue-700 font-medium">
+                      <div className="text-xs text-blue-700 font-medium leading-tight line-clamp-3 mb-2">
                         {classData.instructor}
                       </div>
                       {/* Lab sessions have special styling */}
                       {classData.course.includes('LAB') && (
-                        <div className="mt-1 text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-bold">
+                        <div className="mt-auto text-xs bg-green-100 text-green-800 px-3 py-1.5 rounded-full font-bold text-center">
                           LAB
                         </div>
                       )}
@@ -187,7 +199,7 @@ const Timetable = () => {
       {days.map((day) => (
         <div key={day} className="bg-white rounded-xl shadow-lg border border-gray-200 p-6">
           <h3 className="text-xl font-bold text-gray-900 mb-4">{day}</h3>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {timeSlots.map((time) => {
               const classData = getClassData(day, time)
               
@@ -195,9 +207,9 @@ const Timetable = () => {
                 // Show lunch break as null on Sunday and Monday (weekends)
                 if (day === 'Sunday' || day === 'Monday') {
                   return (
-                    <div key={time} className="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
-                      <div className="w-24 font-bold text-gray-700 text-base">{time}</div>
-                      <div className="flex-1 text-center text-gray-500 font-medium text-base">
+                    <div key={time} className="flex items-center p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
+                      <div className="w-20 font-bold text-gray-700 text-sm">{time}</div>
+                      <div className="flex-1 text-center text-gray-500 font-medium text-sm">
                         No Lunch Break (Weekend)
                       </div>
                     </div>
@@ -205,9 +217,9 @@ const Timetable = () => {
                 }
                 
                 return (
-                  <div key={time} className="flex items-center p-4 bg-orange-50 rounded-lg border-2 border-orange-200">
-                    <div className="w-24 font-bold text-orange-800 text-base">{time}</div>
-                    <div className="flex-1 text-center text-orange-800 font-bold text-base">
+                  <div key={time} className="flex items-center p-6 bg-orange-50 rounded-lg border-2 border-orange-200">
+                    <div className="w-20 font-bold text-orange-800 text-sm">{time}</div>
+                    <div className="flex-1 text-center text-orange-800 font-bold text-sm">
                       LUNCH BREAK (12:50 - 1:40 PM)
                     </div>
                   </div>
@@ -216,26 +228,28 @@ const Timetable = () => {
 
               if (!classData) {
                 return (
-                  <div key={time} className="flex items-center p-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-gray-500">
-                    <div className="w-24 font-bold text-gray-700 text-base">{time}</div>
-                    <div className="flex-1 text-center font-medium text-base">No Class</div>
+                  <div key={time} className="flex items-center p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 text-gray-500">
+                    <div className="w-20 font-bold text-gray-700 text-sm">{time}</div>
+                    <div className="flex-1 text-center font-medium text-sm">No Class</div>
                   </div>
                 )
               }
 
               return (
-                <div key={time} className="flex items-center p-4 rounded-lg bg-blue-50 border-2 border-blue-200">
-                  <div className="w-24 font-bold text-gray-700 text-base">{time}</div>
-                  <div className="flex-1">
-                    <div className="font-bold text-xs text-blue-900 mb-1">{classData.course}</div>
-                    <div className="font-semibold text-base text-blue-900 mb-1">{classData.subject}</div>
-                    <div className="text-sm text-blue-700 font-medium">{classData.instructor}</div>
-                    {/* Lab sessions have special styling */}
-                    {classData.course.includes('LAB') && (
-                      <div className="mt-2 text-xs bg-green-100 text-green-800 px-3 py-1 rounded-full font-bold">
-                        LAB SESSION
-                      </div>
-                    )}
+                <div key={time} className="p-6 rounded-lg bg-blue-50 border-2 border-blue-200">
+                  <div className="flex items-start">
+                    <div className="font-bold text-gray-700 text-sm mr-6 flex-shrink-0">{time}</div>
+                    <div className="flex-1">
+                      <div className="font-bold text-sm text-blue-900 mb-2">{classData.course}</div>
+                      <div className="font-semibold text-sm text-blue-900 mb-2">{classData.subject}</div>
+                      <div className="text-xs text-blue-700 font-medium leading-tight mb-2">{classData.instructor}</div>
+                      {/* Lab sessions have special styling */}
+                      {classData.course.includes('LAB') && (
+                        <div className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full font-bold">
+                          LAB SESSION
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               )
@@ -259,8 +273,8 @@ const Timetable = () => {
           </tr>
         </thead>
         <tbody>
-          {days.map((day) =>
-            timeSlots.map((time) => {
+          {days.map((day, dayIndex) => {
+            const dayEntries = timeSlots.map((time) => {
               const classData = getClassData(day, time)
               
               if (time === 'LUNCH') {
@@ -310,7 +324,19 @@ const Timetable = () => {
                 </tr>
               )
             })
-          )}
+
+            return (
+              <React.Fragment key={day}>
+                {dayEntries}
+                {/* Add spacing row between days (except for the last day) */}
+                {dayIndex < days.length - 1 && (
+                  <tr className="h-6 bg-gray-50">
+                    <td colSpan="5" className="border-b-2 border-gray-300"></td>
+                  </tr>
+                )}
+              </React.Fragment>
+            )
+          })}
         </tbody>
       </table>
     </div>
@@ -483,9 +509,11 @@ const Timetable = () => {
 
       {/* Timetable Content */}
       <div className="bg-white rounded-xl shadow-lg border-2 border-gray-200 p-6">
-        {view === 'weekly' && renderWeeklyView()}
-        {view === 'daily' && renderDailyView()}
-        {view === 'list' && renderListView()}
+        <div className={`${showWeekends ? 'overflow-x-auto' : ''}`}>
+          {view === 'weekly' && renderWeeklyView()}
+          {view === 'daily' && renderDailyView()}
+          {view === 'list' && renderListView()}
+        </div>
       </div>
 
       {/* Legend */}
