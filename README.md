@@ -201,7 +201,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Documentation**: Check the Help section in the app
 - **Issues**: Report bugs via GitHub issues
-- **Email**: support@timetablemanager.com
+- **Email**: noel.regis04@gmail.com , mdrakqibalam@gmail.com
 - **Community**: Join our community forum
 
 ## 🙏 Acknowledgments
