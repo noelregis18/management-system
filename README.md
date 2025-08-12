@@ -1,4 +1,4 @@
-# 🎓 Timetable Manager
+# 🎓 Timetable Manager - Professional Desktop Application
 
 A **professional desktop application** for managing college timetables, built with modern web technologies. This standalone application provides an intuitive interface for creating, managing, and organizing academic schedules.
 
@@ -6,6 +6,41 @@ A **professional desktop application** for managing college timetables, built wi
 ![React](https://img.shields.io/badge/React-18.2.0-blue.svg)
 ![Electron](https://img.shields.io/badge/Electron-27.1.3-green.svg)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3.6-blue.svg)
+
+## 🚀 Quick Start
+
+### ⚡ **Instant Launch (Recommended)**
+```bash
+Double-click: start.bat
+```
+
+### 💻 **Manual Start (Alternative)**
+```bash
+npm run electron-dev
+```
+
+### ✅ **Success Indicators**
+- ✅ Vite server shows: `Local: http://localhost:5173/`
+- ✅ Electron window opens with blue sidebar
+- ✅ Dashboard displays statistics cards
+
+## 📋 Prerequisites & Setup
+
+### First Time Setup
+1. **Install Node.js** (version 16 or higher) from [nodejs.org](https://nodejs.org/)
+2. **Install Dependencies**: `npm install`
+3. **Launch Application**: Double-click `start.bat` or run `npm run electron-dev`
+
+### Available Commands
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Vite development server |
+| `npm run build` | Build for production |
+| `npm run preview` | Preview production build |
+| `npm run electron` | Run Electron with built files |
+| `npm run electron-dev` | **Start development with Electron** |
+| `npm run electron-build` | Build Electron app |
+| `npm run dist` | Create distributable packages |
 
 ## ✨ Features
 
@@ -19,6 +54,7 @@ A **professional desktop application** for managing college timetables, built wi
 - **Conflict Detection**: Automatic detection of scheduling conflicts
 - **Multiple Views**: Daily, weekly, and monthly calendar views
 - **Export Options**: PDF and Excel export functionality
+- **Personal 5th Semester CSE B Timetable**: Pre-loaded with your specific schedule
 
 ### 📚 Course Management
 - **Comprehensive Database**: Store detailed course information
@@ -44,55 +80,63 @@ A **professional desktop application** for managing college timetables, built wi
 - **Backup Management**: Automatic and manual backup options
 - **Export Settings**: Configure default export formats
 
-## 🚀 Quick Start
+## 🎯 Key Features to Try
 
-### Prerequisites
-- **Node.js** (version 16 or higher)
-- **npm** or **yarn** package manager
+### 📅 Creating Your First Timetable
+1. Go to **Timetable** page
+2. Click on any empty time slot
+3. Add course details
+4. Save and see it appear in the grid
 
-### Installation & Setup
+### 📚 Adding Courses
+1. Navigate to **Courses** page
+2. Click **"Add Course"** button
+3. Fill in course information
+4. Assign to departments and instructors
 
-1. **Clone or Download** the project files
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
+### 🏢 Managing Rooms
+1. Go to **Rooms** page
+2. Add new rooms with capacity and equipment
+3. Track availability status
+4. Organize by buildings
 
-3. **Start Development Server**:
-   ```bash
-   npm run dev
-   ```
+## 🎨 Customization
 
-4. **Run as Desktop App**:
-   ```bash
-   npm run electron-dev
-   ```
+### Theme Settings
+- Go to **Settings** → **General**
+- Choose between Light/Dark themes
+- Adjust language and timezone
 
-### 🎯 One-Command Start
-```bash
-npm run electron-dev
-```
-This single command will:
-- Start the Vite development server
-- Launch the Electron desktop application
-- Enable hot-reload for instant updates
+### Notifications
+- Configure email and push notifications
+- Set class reminders
+- Enable schedule change alerts
 
-## 📦 Building for Production
+## 💾 Data Management
 
-### Build Web Version
-```bash
-npm run build
-```
+### Auto-Save
+- Your data is automatically saved
+- Changes are preserved between sessions
 
-### Build Desktop Application
-```bash
-npm run electron-build
-```
+### Export Options
+- Export timetables to PDF or Excel
+- Use the export buttons in the Timetable page
 
-### Create Installer
-```bash
-npm run dist
-```
+### Backup
+- Automatic daily backups (configurable)
+- Manual backup options in Settings
+
+## 📱 Application Overview
+
+### Navigation 🧭
+Use the sidebar to navigate between:
+- **Dashboard** - Overview and statistics
+- **Timetable** - Weekly schedule grid
+- **Courses** - Course management
+- **Rooms** - Facility management
+- **Departments** - Academic departments
+- **Settings** - Preferences
+- **Help** - Documentation and support
 
 ## 🛠️ Tech Stack
 
@@ -152,17 +196,22 @@ timetable-manager/
 - **Memory Efficient**: Optimized state management
 - **Background Processing**: Non-blocking operations
 
-## 🔧 Available Scripts
+## 📦 Building for Production
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start Vite development server |
-| `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
-| `npm run electron` | Run Electron with built files |
-| `npm run electron-dev` | **Start development with Electron** |
-| `npm run electron-build` | Build Electron app |
-| `npm run dist` | Create distributable packages |
+### Build Web Version
+```bash
+npm run build
+```
+
+### Build Desktop Application
+```bash
+npm run electron-build
+```
+
+### Create Installer
+```bash
+npm run dist
+```
 
 ## 📱 Platform Support
 
@@ -184,6 +233,30 @@ The application comes with sample data to help you get started:
 - **12 Sample Rooms** with various capacities and equipment
 - **5 Academic Departments** with complete information
 - **Sample Timetable** with realistic scheduling
+- **Personal 5th Semester CSE B Timetable** pre-loaded
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**Application won't start?**
+- Ensure Node.js is installed
+- Run `npm install` to install dependencies
+- Check if port 5173 is available
+
+**Blank screen?**
+- Wait a few seconds for the app to load
+- Check the terminal for any error messages
+- Try refreshing with `Ctrl+R`
+
+**Performance issues?**
+- Close unnecessary applications
+- Ensure sufficient RAM (4GB+ recommended)
+- Update to latest Node.js version
+
+## 🛑 To Stop the Application
+- Close the Electron window
+- Press `Ctrl+C` in the terminal
 
 ## 🤝 Contributing
 
@@ -201,7 +274,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Documentation**: Check the Help section in the app
 - **Issues**: Report bugs via GitHub issues
-- **Email**: support@timetablemanager.com
+- **Email**: noel.regis04@gmail.com , mdrakqibalam@gmail.com
 - **Community**: Join our community forum
 
 ## 🙏 Acknowledgments
