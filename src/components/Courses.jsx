@@ -3,14 +3,37 @@
  * 
  * This component manages the list of courses in the system.
  * It allows users to view, add, edit, and delete course information.
+ * 
+ * Key features:
+ * - Course listing and management
+ * - Search and filter functionality
+ * - Add, edit, and delete operations
+ * - Course details display
+ * - Real-time data updates
+ * - Professional course management interface
  */
 
+// Import React and useState hook for state management
 import React, { useState } from 'react'
+// Import Lucide React icons for UI elements
 import { BookOpen, Plus, Search, Edit, Trash2, Clock, Users } from 'lucide-react'
 
+/**
+ * Courses Component
+ * 
+ * This component provides comprehensive course management functionality:
+ * - Display all courses in the system
+ * - Search and filter courses
+ * - Add new courses
+ * - Edit existing course information
+ * - Delete courses with confirmation
+ * - View detailed course information
+ */
 const Courses = () => {
-  // Real 5th Semester CSE B courses data
+  // State management for courses data
+  // Real 5th Semester CSE B courses data with comprehensive information
   const [courses, setCourses] = useState([
+    // Software Engineering course
     {
       id: 1,
       name: 'Software Engineering',
@@ -22,6 +45,7 @@ const Courses = () => {
       students: 65,
       semester: 'Fall 2025'
     },
+    // Compiler Design course
     {
       id: 2,
       name: 'Compiler Design',
@@ -33,6 +57,7 @@ const Courses = () => {
       students: 65,
       semester: 'Fall 2025'
     },
+    // Operating Systems course
     {
       id: 3,
       name: 'Operating Systems',
@@ -44,6 +69,7 @@ const Courses = () => {
       students: 65,
       semester: 'Fall 2025'
     },
+    // Object Oriented Programming course
     {
       id: 4,
       name: 'Object Oriented Programming',
@@ -55,6 +81,7 @@ const Courses = () => {
       students: 65,
       semester: 'Fall 2025'
     },
+    // Introduction to Industrial Management course
     {
       id: 5,
       name: 'Introduction to Industrial Management (Humanities III)',
@@ -66,6 +93,7 @@ const Courses = () => {
       students: 65,
       semester: 'Fall 2025'
     },
+    // Artificial Intelligence course
     {
       id: 6,
       name: 'Artificial Intelligence',
@@ -77,6 +105,7 @@ const Courses = () => {
       students: 65,
       semester: 'Fall 2025'
     },
+    // Software Engineering Lab course
     {
       id: 7,
       name: 'Software Engineering Lab',
@@ -88,6 +117,7 @@ const Courses = () => {
       students: 65,
       semester: 'Fall 2025'
     },
+    // Operating System Lab course
     {
       id: 8,
       name: 'Operating System Lab',
@@ -99,6 +129,7 @@ const Courses = () => {
       students: 65,
       semester: 'Fall 2025'
     },
+    // Object Oriented Programming Lab course
     {
       id: 9,
       name: 'Object Oriented Programming Lab',
@@ -110,6 +141,7 @@ const Courses = () => {
       students: 65,
       semester: 'Fall 2025'
     },
+    // Constitution of India course
     {
       id: 10,
       name: 'Constitution of India',
@@ -125,6 +157,8 @@ const Courses = () => {
 
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState('All Departments')
+  const [isEditing, setIsEditing] = useState(false)
+  const [editingCourse, setEditingCourse] = useState(null)
 
   /**
    * Filter courses based on search term and selected department
@@ -145,6 +179,22 @@ const Courses = () => {
    */
   const handleDeleteCourse = (courseId) => {
     setCourses(courses.filter(course => course.id !== courseId))
+  }
+
+  const handleEditCourse = (course) => {
+    setEditingCourse({ ...course })
+    setIsEditing(true)
+  }
+
+  const handleCancelEdit = () => {
+    setIsEditing(false)
+    setEditingCourse(null)
+  }
+
+  const handleSaveCourse = (updatedCourse) => {
+    setCourses(prevCourses => prevCourses.map(c => c.id === updatedCourse.id ? updatedCourse : c))
+    setIsEditing(false)
+    setEditingCourse(null)
   }
 
   return (
@@ -267,7 +317,9 @@ const Courses = () => {
                   <td className="p-6 text-gray-600">{course.duration}</td>
                   <td className="p-6">
                     <div className="flex space-x-2">
-                      <button className="p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors">
+                      <button 
+                        onClick={() => handleEditCourse(course)}
+                        className="p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors">
                         <Edit className="w-4 h-4" />
                       </button>
                       <button 
@@ -297,6 +349,119 @@ const Courses = () => {
             <Plus className="w-4 h-4 mr-2" />
             Add Course
           </button>
+        </div>
+      )}
+
+      {isEditing && editingCourse && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Edit Course</h3>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Course Name</label>
+                <input
+                  type="text"
+                  value={editingCourse.name}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, name: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Code</label>
+                <input
+                  type="text"
+                  value={editingCourse.code}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, code: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Instructor (Teacher Name)</label>
+                <input
+                  type="text"
+                  value={editingCourse.instructor}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, instructor: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500"
+                  placeholder="e.g., John Doe"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                <select
+                  value={editingCourse.department}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, department: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500"
+                >
+                  <option>CSE / Core</option>
+                  <option>CSE / Engineering Science</option>
+                  <option>CSE / Lab</option>
+                  <option>Humanities/Management</option>
+                  <option>Department Elective</option>
+                  <option>Mandatory (MC)</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Credits</label>
+                  <input
+                    type="number"
+                    value={editingCourse.credits}
+                    onChange={(e) => setEditingCourse({ ...editingCourse, credits: parseInt(e.target.value) || 0 })}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Students</label>
+                  <input
+                    type="number"
+                    value={editingCourse.students}
+                    onChange={(e) => setEditingCourse({ ...editingCourse, students: parseInt(e.target.value) || 0 })}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
+                <input
+                  type="text"
+                  value={editingCourse.duration}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, duration: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+                <input
+                  type="text"
+                  value={editingCourse.semester}
+                  onChange={(e) => setEditingCourse({ ...editingCourse, semester: e.target.value })}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-500"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-3 mt-6">
+              <button
+                onClick={handleCancelEdit}
+                className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleSaveCourse(editingCourse)}
+                className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
