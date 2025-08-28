@@ -3,28 +3,59 @@
  * 
  * This component manages classroom and facility information.
  * Users can view, add, edit, and manage room details and availability.
+ * 
+ * Key features:
+ * - Room listing and management
+ * - Search and filter functionality
+ * - Add, edit, and delete room operations
+ * - Room availability tracking
+ * - Schedule management
+ * - Professional room management interface
  */
 
+// Import React and useState hook for state management
 import React, { useState } from 'react'
+// Import Lucide React icons for UI elements
 import { Building, Plus, Search, Edit, Trash2, MapPin, Users, Wifi } from 'lucide-react'
+// Import useNavigate hook for programmatic navigation
 import { useNavigate } from 'react-router-dom'
 
+/**
+ * Rooms Component
+ * 
+ * This component provides comprehensive room management functionality:
+ * - Display all rooms and facilities
+ * - Search and filter rooms by type and availability
+ * - Add new rooms with detailed information
+ * - Edit existing room details
+ * - Delete rooms with confirmation
+ * - Track room schedules and instructors
+ * - Manage room capacity and status
+ */
 const Rooms = () => {
+  // Navigation hook for programmatic routing
   const navigate = useNavigate()
-  const [editingRoom, setEditingRoom] = useState(null)
-  const [isEditing, setIsEditing] = useState(false)
-  const [isAddingRoom, setIsAddingRoom] = useState(false)
+  
+  // State management for room editing
+  const [editingRoom, setEditingRoom] = useState(null)        // Currently editing room
+  const [isEditing, setIsEditing] = useState(false)           // Edit mode flag
+  const [isAddingRoom, setIsAddingRoom] = useState(false)     // Add mode flag
+  
+  // State for new room form data
   const [newRoom, setNewRoom] = useState({
-    name: '',
-    capacity: 65,
-    type: 'Lecture Hall',
-    status: 'Available',
-    subjects: [],
-    schedule: '',
-    instructors: ''
+    name: '',                    // Room name
+    capacity: 65,                // Room capacity
+    type: 'Lecture Hall',        // Room type
+    status: 'Available',         // Room status
+    subjects: [],                // Subjects taught in room
+    schedule: '',                // Room schedule
+    instructors: ''              // Assigned instructors
   })
+  
+  // State management for rooms data
   // Real rooms data based on 5th Semester CSE B timetable
   const [rooms, setRooms] = useState([
+    // Main Lecture Hall
     {
       id: 1,
       name: 'LH-136',
@@ -34,6 +65,7 @@ const Rooms = () => {
       subjects: ['Software Engineering', 'Compiler Design', 'Operating Systems', 'Object Oriented Programming', 'Artificial Intelligence', 'Introduction to Industrial Management', 'Constitution of India'],
       schedule: 'Monday to Saturday, 9:30 AM - 5:00 PM'
     },
+    // Software Engineering Lab
     {
       id: 2,
       name: 'Computer Lab 3&4',
@@ -44,6 +76,7 @@ const Rooms = () => {
       schedule: 'Wednesday, 2:30 PM - 5:00 PM',
       instructors: 'SAR(CS)+SKHC(CS)+ASH(CS)+SHD(CS)'
     },
+    // Operating Systems Lab
     {
       id: 3,
       name: 'Computer Lab 3&4',
@@ -54,6 +87,7 @@ const Rooms = () => {
       schedule: 'Thursday, 2:30 PM - 5:00 PM',
       instructors: 'BTM(CS)+PR(CS)+MM(CS)+PK(CS)'
     },
+    // Object Oriented Programming Lab
     {
       id: 4,
       name: 'Computer Lab 7&8',
@@ -64,6 +98,7 @@ const Rooms = () => {
       schedule: 'Saturday, 2:30 PM - 5:00 PM',
       instructors: 'AB(CS)+LKM(CS)+RR(CS)'
     },
+    // Library
     {
       id: 5,
       name: 'Library',
@@ -74,6 +109,7 @@ const Rooms = () => {
       schedule: 'Thursday & Friday, 1:40 PM - 2:30 PM',
       instructors: 'LIBRARIAN'
     },
+    // Aptitude Training Room
     {
       id: 6,
       name: 'Aptitude Training Room',
@@ -84,6 +120,7 @@ const Rooms = () => {
       schedule: 'Friday, 2:30 PM - 4:10 PM',
       instructors: 'AM(CS), BTM(CS)'
     },
+    // Grooming Session Room
     {
       id: 7,
       name: 'Grooming Session Room',
@@ -96,8 +133,9 @@ const Rooms = () => {
     }
   ])
 
-  const [searchTerm, setSearchTerm] = useState('')
-  const [selectedRoomType, setSelectedRoomType] = useState('All Types')
+  // State for search and filter functionality
+  const [searchTerm, setSearchTerm] = useState('')             // Search term for filtering rooms
+  const [selectedRoomType, setSelectedRoomType] = useState('All Types') // Selected room type filter
 
   /**
    * Filter rooms based on search term and selected room type

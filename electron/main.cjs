@@ -3,52 +3,67 @@
  * 
  * This file manages the main Electron process and creates the application window.
  * It handles window management, menu creation, and application lifecycle events.
+ * 
+ * Key responsibilities:
+ * - Create and manage the main application window
+ * - Handle application lifecycle events
+ * - Create application menu and shortcuts
+ * - Manage security settings and permissions
+ * - Handle external links and navigation
  */
 
+// Import Electron modules for main process functionality
 const { app, BrowserWindow, Menu, shell, dialog } = require('electron')
+// Import Node.js path module for file path handling
 const path = require('path')
+// Development mode flag - set to false for production builds
 const isDev = false // Use production build for now (faster and reliable)
 
 // Keep a global reference of the window object
+// This prevents the window from being garbage collected
 let mainWindow
 
 /**
  * Create the main application window
+ * Sets up the browser window with appropriate settings and event handlers
  */
 function createWindow() {
-  // Create the browser window
+  // Create the browser window with specific configuration
   mainWindow = new BrowserWindow({
-    width: 1400,
-    height: 900,
-    minWidth: 1200,
-    minHeight: 700,
+    width: 1400,                    // Initial window width
+    height: 900,                    // Initial window height
+    minWidth: 1200,                 // Minimum window width
+    minHeight: 700,                 // Minimum window height
+    
+    // Web preferences for security and functionality
     webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      enableRemoteModule: false,
-      webSecurity: true,
-      preload: path.join(__dirname, 'preload.cjs')
+      nodeIntegration: false,       // Disable Node.js integration for security
+      contextIsolation: true,       // Enable context isolation for security
+      enableRemoteModule: false,    // Disable remote module for security
+      webSecurity: true,            // Enable web security features
+      preload: path.join(__dirname, 'preload.cjs') // Preload script for IPC
     },
-    icon: path.join(__dirname, '../assets/icon.png'), // App icon
-    titleBarStyle: 'default',
-    show: false, // Don't show until ready
-    frame: true,
-    resizable: true,
-    fullscreenable: true
+    
+    icon: path.join(__dirname, '../assets/icon.png'), // Application icon
+    titleBarStyle: 'default',       // Use default title bar style
+    show: false,                    // Don't show window until ready (prevents flash)
+    frame: true,                    // Show window frame
+    resizable: true,                // Allow window resizing
+    fullscreenable: true            // Allow fullscreen mode
   })
 
-  // Load the app
+  // Load the application content based on development mode
   if (isDev) {
-    // Development: load from Vite dev server
+    // Development mode: load from Vite development server
     mainWindow.loadURL('http://localhost:5173')
-    // Open DevTools in development
+    // Open DevTools for debugging in development
     mainWindow.webContents.openDevTools()
   } else {
-    // Production: load the built files
+    // Production mode: load the built HTML file
     mainWindow.loadFile(path.join(__dirname, '../dist/index.html'))
   }
 
-  // Handle failed loads
+  // Handle failed page loads with retry mechanism
   mainWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL) => {
     console.log('Failed to load:', errorDescription, 'URL:', validatedURL)
     // Try to reload after a short delay
@@ -61,27 +76,29 @@ function createWindow() {
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
     
-    // Focus on the window (for better UX)
+    // Focus on the window for better user experience
     if (isDev) {
       mainWindow.focus()
     }
   })
 
-  // Handle window closed
+  // Handle window closed event
   mainWindow.on('closed', () => {
+    // Dereference the window object to allow garbage collection
     mainWindow = null
   })
 
-  // Handle external links
+  // Handle external links - open them in default browser
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url)
-    return { action: 'deny' }
+    return { action: 'deny' } // Prevent opening in Electron window
   })
 
-  // Prevent navigation to external websites
+  // Prevent navigation to external websites for security
   mainWindow.webContents.on('will-navigate', (event, navigationUrl) => {
     const parsedUrl = new URL(navigationUrl)
     
+    // Only allow navigation to localhost (dev) or file:// (production)
     if (parsedUrl.origin !== 'http://localhost:5173' && parsedUrl.origin !== 'file://') {
       event.preventDefault()
     }
@@ -90,6 +107,7 @@ function createWindow() {
 
 /**
  * Create application menu
+ * Defines the menu structure and keyboard shortcuts
  */
 function createMenu() {
   const template = [

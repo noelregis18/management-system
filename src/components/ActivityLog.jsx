@@ -3,106 +3,154 @@
  * 
  * This component provides a comprehensive view of all activities
  * with filtering, search, and bulk action capabilities.
+ * 
+ * Key features:
+ * - Activity listing and tracking
+ * - Advanced filtering and search
+ * - Bulk action operations
+ * - Status and priority management
+ * - Export and data management
+ * - Real-time activity monitoring
  */
 
+// Import React hooks for state management and side effects
 import React, { useState, useEffect } from 'react'
+// Import Lucide React icons for UI elements
 import { 
-  Clock, 
-  CheckCircle, 
-  XCircle, 
-  AlertCircle, 
-  Activity, 
-  Search, 
-  Filter, 
-  Download,
-  Trash2,
-  Eye,
-  Calendar,
-  User
+  Clock,           // Time-related operations icon
+  CheckCircle,     // Success/approval icon
+  XCircle,         // Error/denial icon
+  AlertCircle,     // Warning/alert icon
+  Activity,        // Activity tracking icon
+  Search,          // Search functionality icon
+  Filter,          // Filter operations icon
+  Download,        // Export/download icon
+  Trash2,          // Delete/remove icon
+  Eye,             // View/details icon
+  Calendar,        // Date/time icon
+  User             // User-related icon
 } from 'lucide-react'
 
+/**
+ * ActivityLog Component
+ * 
+ * @param {Array} activities - Array of activity objects to display
+ * @param {function} onBulkAction - Callback for bulk action operations
+ * 
+ * This component provides comprehensive activity logging functionality:
+ * - Display all activities with detailed information
+ * - Filter activities by status, priority, and search terms
+ * - Perform bulk actions on selected activities
+ * - Export activity data
+ * - Track activity status and progress
+ * - Manage activity priorities and categories
+ */
 const ActivityLog = ({ activities = [], onBulkAction }) => {
-  // State for filtering and search
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all')
-  const [priorityFilter, setPriorityFilter] = useState('all')
-  const [selectedActivities, setSelectedActivities] = useState([])
-  const [viewMode, setViewMode] = useState('list') // list or grid
+  // State management for filtering and search functionality
+  const [searchTerm, setSearchTerm] = useState('')                    // Search term for filtering activities
+  const [statusFilter, setStatusFilter] = useState('all')            // Filter by activity status
+  const [priorityFilter, setPriorityFilter] = useState('all')        // Filter by activity priority
+  const [selectedActivities, setSelectedActivities] = useState([])   // Selected activities for bulk actions
+  const [viewMode, setViewMode] = useState('list')                   // View mode: list or grid
 
-  // Filter activities based on search and filters
+  // Filter activities based on search terms and selected filters
+  // This creates a filtered view of activities based on user criteria
   const filteredActivities = activities.filter(activity => {
-    const matchesSearch = activity.message.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesStatus = statusFilter === 'all' || activity.status === statusFilter
-    const matchesPriority = priorityFilter === 'all' || activity.priority === priorityFilter
+    const matchesSearch = activity.message.toLowerCase().includes(searchTerm.toLowerCase())  // Text search
+    const matchesStatus = statusFilter === 'all' || activity.status === statusFilter        // Status filter
+    const matchesPriority = priorityFilter === 'all' || activity.priority === priorityFilter // Priority filter
     
     return matchesSearch && matchesStatus && matchesPriority
   })
 
   /**
-   * Handle bulk actions
+   * Handle bulk actions on selected activities
+   * Performs operations on multiple activities at once
+   * 
+   * @param {string} action - The action to perform (e.g., 'approve', 'deny', 'delete')
    */
   const handleBulkAction = (action) => {
+    // Don't proceed if no activities are selected
     if (selectedActivities.length === 0) return
     
+    // Call parent component's bulk action handler
     if (onBulkAction) {
       onBulkAction(selectedActivities, action)
     }
     
+    // Clear selections after action is performed
     setSelectedActivities([])
   }
 
   /**
-   * Toggle activity selection
+   * Toggle activity selection for bulk operations
+   * Adds or removes an activity from the selection list
+   * 
+   * @param {string|number} activityId - The ID of the activity to toggle
    */
   const toggleActivitySelection = (activityId) => {
     setSelectedActivities(prev => 
       prev.includes(activityId)
-        ? prev.filter(id => id !== activityId)
-        : [...prev, activityId]
+        ? prev.filter(id => id !== activityId)  // Remove if already selected
+        : [...prev, activityId]                 // Add if not selected
     )
   }
 
   /**
-   * Select all activities
+   * Select all filtered activities
+   * Selects all activities currently visible in the filtered view
    */
   const selectAllActivities = () => {
     setSelectedActivities(filteredActivities.map(activity => activity.id))
   }
 
   /**
-   * Clear all selections
+   * Clear all activity selections
+   * Resets the selection state to empty
    */
   const clearSelections = () => {
     setSelectedActivities([])
   }
 
   /**
-   * Get status color
+   * Get CSS classes for status-based styling
+   * Returns appropriate color classes based on activity status
+   * 
+   * @param {string} status - The activity status
+   * @returns {string} CSS classes for styling
    */
   const getStatusColor = (status) => {
     switch (status) {
-      case 'approved': return 'text-green-600 bg-green-50'
-      case 'denied': return 'text-red-600 bg-red-50'
-      case 'pending': return 'text-yellow-600 bg-yellow-50'
-      case 'completed': return 'text-blue-600 bg-blue-50'
-      default: return 'text-gray-600 bg-gray-50'
+      case 'approved': return 'text-green-600 bg-green-50'    // Green for approved
+      case 'denied': return 'text-red-600 bg-red-50'          // Red for denied
+      case 'pending': return 'text-yellow-600 bg-yellow-50'   // Yellow for pending
+      case 'completed': return 'text-blue-600 bg-blue-50'     // Blue for completed
+      default: return 'text-gray-600 bg-gray-50'              // Gray for unknown status
     }
   }
 
   /**
-   * Get priority color
+   * Get CSS classes for priority-based styling
+   * Returns appropriate color classes based on activity priority
+   * 
+   * @param {string} priority - The activity priority
+   * @returns {string} CSS classes for styling
    */
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case 'high': return 'text-red-600 bg-red-50'
-      case 'medium': return 'text-yellow-600 bg-yellow-50'
-      case 'low': return 'text-green-600 bg-green-50'
-      default: return 'text-gray-600 bg-gray-50'
+      case 'high': return 'text-red-600 bg-red-50'            // Red for high priority
+      case 'medium': return 'text-yellow-600 bg-yellow-50'    // Yellow for medium priority
+      case 'low': return 'text-green-600 bg-green-50'         // Green for low priority
+      default: return 'text-gray-600 bg-gray-50'              // Gray for unknown priority
     }
   }
 
   /**
    * Format timestamp
+   * Converts a timestamp to a human-readable relative time (e.g., "5m ago", "2h ago", "3d ago")
+   * 
+   * @param {number} timestamp - The timestamp to format
+   * @returns {string} Formatted relative time
    */
   const formatTimestamp = (timestamp) => {
     const now = new Date()
